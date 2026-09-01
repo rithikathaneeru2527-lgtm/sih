@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kaushalya Setu — Sign In</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap');
+
+  :root{
+    --navy-950:#080d1f;
+    --navy-900:#0c1330;
+    --navy-800:#141c3f;
+    --maroon-700:#5c1a2b;
+    --maroon-600:#7a2438;
+    --maroon-500:#9c2f47;
+    --gold-400:#d7ad63;
+    --gold-300:#e8c98a;
+    --ivory:#f4f1ea;
+    --ivory-dim:#c9c6c0;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{height:100%;margin:0;}
+
+  body{
+    font-family:'Inter',sans-serif;
+    color:var(--ivory);
+    background:var(--navy-950);
+    overflow:hidden;
+    position:relative;
+  }
+
+  /* Animated gradient mesh background */
+  .bg{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    background:
+      radial-gradient(60% 50% at 15% 20%, rgba(156,47,71,0.55), transparent 60%),
+      radial-gradient(55% 45% at 85% 15%, rgba(20,28,63,0.9), transparent 65%),
+      radial-gradient(70% 60% at 75% 90%, rgba(92,26,43,0.65), transparent 60%),
+      radial-gradient(50% 50% at 10% 90%, rgba(20,50,90,0.5), transparent 60%),
+      linear-gradient(160deg, var(--navy-950) 0%, var(--navy-900) 45%, var(--maroon-700) 130%);
+    background-size:200% 200%, 200% 200%, 200% 200%, 200% 200%, 100% 100%;
+    animation:drift 22s ease-in-out infinite alternate;
+  }
+  @keyframes drift{
+    0%{background-position:0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%;}
+    100%{background-position:20% 15%, 80% 20%, 80% 80%, 15% 85%, 0% 0%;}
+  }
+
+  .grain{
+    position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .stage{
+    position:relative;
+    z-index:2;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:32px;
+  }
+
+  .layout{
+    width:100%;
+    max-width:980px;
+    display:grid;
+    grid-template-columns:1.1fr 0.9fr;
+    gap:0;
+    align-items:stretch;
+    min-height:560px;
+  }
+
+  /* Left: brand / hero side */
+  .brand-side{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding:56px 48px;
+  }
+
+  .mark{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:56px;
+  }
+  .mark-glyph{
+    width:34px;height:34px;
+    border-radius:50%;
+    background:linear-gradient(135deg, var(--gold-300), var(--gold-400));
+    position:relative;
+    flex-shrink:0;
+  }
+  .mark-glyph::after{
+    content:"";
+    position:absolute;inset:8px;
+    border-radius:50%;
+    background:var(--navy-950);
+  }
+  .mark-text{
+    font-family:'Fraunces',serif;
+    font-size:19px;
+    letter-spacing:0.01em;
+    font-weight:500;
+  }
+
+  h1{
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    font-size:clamp(38px, 4.6vw, 54px);
+    line-height:1.06;
+    letter-spacing:-0.01em;
+    margin:0 0 22px;
+    max-width:9.5ch;
+  }
+  h1 em{
+    font-style:italic;
+    font-weight:300;
+    color:var(--gold-300);
+  }
+
+  .lede{
+    font-size:16px;
+    line-height:1.6;
+    color:var(--ivory-dim);
+    max-width:38ch;
+    margin:0 0 40px;
+  }
+
+  .stat-row{
+    display:flex;
+    gap:36px;
+    padding-top:28px;
+    border-top:1px solid rgba(244,241,234,0.14);
+  }
+  .stat b{
+    display:block;
+    font-family:'Fraunces',serif;
+    font-size:26px;
+    font-weight:500;
+    color:var(--gold-300);
+  }
+  .stat span{
+    font-size:12.5px;
+    color:var(--ivory-dim);
+  }
+
+  /* Right: glass card */
+  .card-wrap{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+  }
+  .card{
+    width:100%;
+    max-width:380px;
+    background:rgba(20,28,63,0.55);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+    border:1px solid rgba(244,241,234,0.14);
+    border-radius:20px;
+    padding:40px 34px;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,0.6);
+  }
+
+  .card h2{
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    font-size:24px;
+    margin:0 0 6px;
+  }
+  .card p.sub{
+    font-size:14px;
+    color:var(--ivory-dim);
+    margin:0 0 30px;
+    line-height:1.5;
+  }
+
+  label{
+    display:block;
+    font-size:12.5px;
+    color:var(--ivory-dim);
+    margin-bottom:8px;
+  }
+
+  .phone-field{
+    display:flex;
+    align-items:center;
+    background:rgba(8,13,31,0.55);
+    border:1px solid rgba(244,241,234,0.18);
+    border-radius:12px;
+    padding:4px;
+    transition:border-color .2s ease;
+  }
+  .phone-field:focus-within{
+    border-color:var(--gold-400);
+  }
+  .phone-field .cc{
+    padding:10px 12px;
+    font-size:14.5px;
+    color:var(--ivory-dim);
+    border-right:1px solid rgba(244,241,234,0.16);
+  }
+  .phone-field input{
+    flex:1;
+    background:transparent;
+    border:none;
+    outline:none;
+    color:var(--ivory);
+    font-size:15.5px;
+    padding:12px 12px;
+    font-family:'Inter',sans-serif;
+    letter-spacing:0.02em;
+  }
+  .phone-field input::placeholder{color:rgba(244,241,234,0.35);}
+
+  .btn{
+    width:100%;
+    margin-top:22px;
+    padding:14px 18px;
+    border:none;
+    border-radius:12px;
+    background:linear-gradient(135deg, var(--gold-300), var(--gold-400));
+    color:var(--navy-950);
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:14.5px;
+    cursor:pointer;
+    transition:transform .15s ease, box-shadow .15s ease, opacity .15s ease;
+    box-shadow:0 10px 24px -8px rgba(215,173,99,0.5);
+  }
+  .btn:hover{transform:translateY(-1px); box-shadow:0 14px 30px -8px rgba(215,173,99,0.6);}
+  .btn:active{transform:translateY(0);}
+  .btn[disabled]{opacity:.5; cursor:not-allowed; transform:none; box-shadow:none;}
+
+  .btn-ghost{
+    width:100%;
+    margin-top:12px;
+    padding:11px 18px;
+    border:1px solid rgba(244,241,234,0.2);
+    border-radius:12px;
+    background:transparent;
+    color:var(--ivory-dim);
+    font-family:'Inter',sans-serif;
+    font-weight:500;
+    font-size:13.5px;
+    cursor:pointer;
+    transition:border-color .15s ease, color .15s ease;
+  }
+  .btn-ghost:hover{border-color:rgba(244,241,234,0.4); color:var(--ivory);}
+
+  .fine{
+    font-size:12px;
+    color:rgba(201,198,192,0.65);
+    margin-top:22px;
+    line-height:1.6;
+    text-align:center;
+  }
+
+  /* OTP step */
+  .otp-row{
+    display:flex;
+    gap:8px;
+    margin-bottom:6px;
+  }
+  .otp-row input{
+    width:100%;
+    aspect-ratio:1;
+    text-align:center;
+    font-size:19px;
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    background:rgba(8,13,31,0.55);
+    border:1px solid rgba(244,241,234,0.18);
+    border-radius:10px;
+    color:var(--ivory);
+    outline:none;
+    transition:border-color .2s ease, transform .12s ease;
+  }
+  .otp-row input:focus{border-color:var(--gold-400); transform:translateY(-1px);}
+
+  .otp-meta{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:12px;
+    font-size:13px;
+    color:var(--ivory-dim);
+  }
+  .otp-meta button{
+    background:none;border:none;color:var(--gold-300);
+    font-size:13px;cursor:pointer;padding:0;font-family:'Inter',sans-serif;font-weight:500;
+  }
+  .otp-meta button[disabled]{color:rgba(201,198,192,0.4); cursor:default;}
+
+  .step{display:none;}
+  .step.active{display:block;}
+
+  .success{
+    text-align:center;
+    padding:12px 0 4px;
+  }
+  .success .ring{
+    width:56px;height:56px;
+    margin:0 auto 20px;
+    border-radius:50%;
+    background:linear-gradient(135deg, var(--gold-300), var(--gold-400));
+    display:flex;align-items:center;justify-content:center;
+  }
+  .success .ring svg{width:24px;height:24px;}
+
+  @media (max-width:820px){
+    .layout{grid-template-columns:1fr; min-height:auto;}
+    .brand-side{padding:40px 8px 24px; text-align:left;}
+    h1{max-width:none;}
+    .stat-row{display:none;}
+    .card-wrap{padding:8px;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .bg{animation:none;}
+  }
+</style>
+</head>
+<body>
+
+<div class="bg"></div>
+<div class="grain"></div>
+
+<div class="stage">
+  <div class="layout">
+
+    <div class="brand-side">
+      <div class="mark">
+        <div class="mark-glyph"></div>
+        <div class="mark-text">Kaushalya&nbsp;Setu</div>
+      </div>
+
+      <h1>Where training <em>meets</em> the jobs employers are actually hiring for.</h1>
+      <p class="lede">Sign in to see live skill demand by sector, where your curriculum has gaps, and what to learn next.</p>
+
+      <div class="stat-row">
+        <div class="stat">
+          <b>6</b>
+          <span>Sectors tracked</span>
+        </div>
+        <div class="stat">
+          <b>1,240+</b>
+          <span>Job signals ingested</span>
+        </div>
+        <div class="stat">
+          <b>38</b>
+          <span>Courses mapped</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-wrap">
+      <div class="card">
+
+        <!-- Step 1: phone -->
+        <div class="step active" id="step-phone">
+          <h2>Sign in</h2>
+          <p class="sub">Enter your mobile number and we'll send you a one-time code.</p>
+
+          <label for="phone">Mobile number</label>
+          <div class="phone-field">
+            <span class="cc">+91</span>
+            <input id="phone" type="tel" inputmode="numeric" maxlength="10" placeholder="98765 43210">
+          </div>
+
+          <button class="btn" id="sendOtpBtn" disabled>Send OTP</button>
+          <p class="fine">By continuing you agree to receive an SMS with a verification code. Standard rates may apply.</p>
+        </div>
+
+        <!-- Step 2: otp -->
+        <div class="step" id="step-otp">
+          <h2>Enter the code</h2>
+          <p class="sub" id="otpSubtext">We sent a 6-digit code to your number.</p>
+
+          <div class="otp-row" id="otpRow">
+            <input maxlength="1" inputmode="numeric" />
+            <input maxlength="1" inputmode="numeric" />
+            <input maxlength="1" inputmode="numeric" />
+            <input maxlength="1" inputmode="numeric" />
+            <input maxlength="1" inputmode="numeric" />
+            <input maxlength="1" inputmode="numeric" />
+          </div>
+
+          <div class="otp-meta">
+            <span id="timerText">Resend in 0:30</span>
+            <button id="resendBtn" disabled>Resend code</button>
+          </div>
+
+          <button class="btn" id="verifyBtn" disabled>Verify & continue</button>
+          <button class="btn-ghost" id="backBtn">Use a different number</button>
+        </div>
+
+        <!-- Step 3: success -->
+        <div class="step" id="step-success">
+          <div class="success">
+            <div class="ring">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M4 12.5L9.5 18L20 6" stroke="#080d1f" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <h2>You're in</h2>
+            <p class="sub" style="margin-bottom:8px;">Number verified. Taking you to your dashboard.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const phoneInput = document.getElementById('phone');
+  const sendOtpBtn = document.getElementById('sendOtpBtn');
+  const stepPhone = document.getElementById('step-phone');
+  const stepOtp = document.getElementById('step-otp');
+  const stepSuccess = document.getElementById('step-success');
+  const otpSubtext = document.getElementById('otpSubtext');
+  const otpRow = document.getElementById('otpRow');
+  const otpInputs = [...otpRow.querySelectorAll('input')];
+  const verifyBtn = document.getElementById('verifyBtn');
+  const backBtn = document.getElementById('backBtn');
+  const resendBtn = document.getElementById('resendBtn');
+  const timerText = document.getElementById('timerText');
+
+  let timerId = null;
+
+  phoneInput.addEventListener('input', () => {
+    phoneInput.value = phoneInput.value.replace(/\D/g, '').slice(0, 10);
+    sendOtpBtn.disabled = phoneInput.value.length !== 10;
+  });
+
+  function goToStep(step){
+    [stepPhone, stepOtp, stepSuccess].forEach(s => s.classList.remove('active'));
+    step.classList.add('active');
+  }
+
+  function startTimer(seconds){
+    clearInterval(timerId);
+    resendBtn.disabled = true;
+    let remaining = seconds;
+    const update = () => {
+      const m = Math.floor(remaining / 60);
+      const s = String(remaining % 60).padStart(2, '0');
+      timerText.textContent = `Resend in ${m}:${s}`;
+    };
+    update();
+    timerId = setInterval(() => {
+      remaining--;
+      if (remaining <= 0){
+        clearInterval(timerId);
+        timerText.textContent = 'Didn\'t get it?';
+        resendBtn.disabled = false;
+      } else {
+        update();
+      }
+    }, 1000);
+  }
+
+  sendOtpBtn.addEventListener('click', () => {
+    const num = phoneInput.value;
+    otpSubtext.textContent = `We sent a 6-digit code to +91 ${num.slice(0,5)} ${num.slice(5)}.`;
+    otpInputs.forEach(i => i.value = '');
+    otpInputs[0].focus();
+    checkOtpComplete();
+    goToStep(stepOtp);
+    startTimer(30);
+  });
+
+  backBtn.addEventListener('click', () => {
+    clearInterval(timerId);
+    goToStep(stepPhone);
+  });
+
+  resendBtn.addEventListener('click', () => {
+    otpInputs.forEach(i => i.value = '');
+    otpInputs[0].focus();
+    checkOtpComplete();
+    startTimer(30);
+  });
+
+  otpInputs.forEach((input, idx) => {
+    input.addEventListener('input', () => {
+      input.value = input.value.replace(/\D/g, '').slice(0, 1);
+      if (input.value && idx < otpInputs.length - 1){
+        otpInputs[idx + 1].focus();
+      }
+      checkOtpComplete();
+    });
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Backspace' && !input.value && idx > 0){
+        otpInputs[idx - 1].focus();
+      }
+    });
+    input.addEventListener('paste', (e) => {
+      e.preventDefault();
+      const digits = (e.clipboardData.getData('text') || '').replace(/\D/g, '').slice(0, 6).split('');
+      digits.forEach((d, i) => { if (otpInputs[i]) otpInputs[i].value = d; });
+      const next = Math.min(digits.length, otpInputs.length - 1);
+      otpInputs[next].focus();
+      checkOtpComplete();
+    });
+  });
+
+  function checkOtpComplete(){
+    const complete = otpInputs.every(i => i.value.length === 1);
+    verifyBtn.disabled = !complete;
+  }
+
+  verifyBtn.addEventListener('click', () => {
+    clearInterval(timerId);
+    goToStep(stepSuccess);
+  });
+</script>
+
+</body>
+</html>

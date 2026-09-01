@@ -1,0 +1,16 @@
+# Dependencies
+node_modules
+.pnpm-store
+
+# Production build
+dist
+build
+
+# Environment & IDE
+.env
+.env.local
+.vscode
+.ds_store
+*.log
+
+.vercel

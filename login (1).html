@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KaushalSetu - Portal Login</title>
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- Tailwind CSS via CDN for standalone HTML rendering -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Plus Jakarta Sans', 'sans-serif'],
+          mono: ['JetBrains Mono', 'monospace'],
+        }
+      }
+    }
+  }
+</script>
+<style>
+  body {
+    background-color: #090d16;
+    color: #f1f5f9;
+  }
+  .glass-card {
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .otp-box:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 12px rgba(99, 102, 241, 0.4);
+  }
+</style>
+</head>
+<body class="min-h-screen font-sans flex items-center justify-center p-4 relative overflow-hidden">
+
+  <!-- Ambient Glowing Background Orbs -->
+  <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-indigo-600/15 rounded-full blur-[120px] pointer-events-none"></div>
+  <div class="absolute bottom-10 right-10 w-[350px] h-[350px] bg-violet-600/15 rounded-full blur-[100px] pointer-events-none"></div>
+  <div class="absolute top-10 left-10 w-[300px] h-[300px] bg-emerald-600/10 rounded-full blur-[90px] pointer-events-none"></div>
+
+  <div class="glass-card w-full max-w-md rounded-2xl p-8 shadow-2xl relative z-10 space-y-6">
+    
+    <!-- Brand Header -->
+    <div class="text-center space-y-2">
+      <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-tr from-indigo-600 via-violet-600 to-amber-500 p-0.5 shadow-lg shadow-indigo-500/20 mb-1">
+        <div class="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center">
+          <svg class="w-7 h-7 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        </div>
+      </div>
+      
+      <div class="flex items-center justify-center space-x-2">
+        <h1 class="text-2xl font-bold bg-gradient-to-r from-white via-slate-100 to-slate-300 bg-clip-text text-transparent tracking-tight">
+          KaushalSetu
+        </h1>
+        <span class="px-2 py-0.5 text-[10px] font-mono font-semibold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 rounded-full">
+          SIH26134
+        </span>
+      </div>
+      <p class="text-xs text-slate-400">
+        Maharashtra Labour Market Intelligence & Skill Alignment Portal
+      </p>
+    </div>
+
+    <!-- Step 1: Phone & Role Selection -->
+    <div id="step-phone" class="space-y-5">
+      <div>
+        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Select Portal Role</label>
+        <div class="grid grid-cols-3 gap-2">
+          <button type="button" class="role-btn px-2.5 py-2 rounded-xl border border-indigo-500 bg-indigo-600/20 text-indigo-300 text-xs font-semibold text-center transition-all" data-role="trainee">
+            Trainee / Student
+          </button>
+          <button type="button" class="role-btn px-2.5 py-2 rounded-xl border border-slate-800 bg-slate-900 text-slate-400 text-xs font-semibold text-center hover:text-white transition-all" data-role="policy">
+            Policy Officer
+          </button>
+          <button type="button" class="role-btn px-2.5 py-2 rounded-xl border border-slate-800 bg-slate-900 text-slate-400 text-xs font-semibold text-center hover:text-white transition-all" data-role="recruiter">
+            Recruiter
+          </button>
+        </div>
+      </div>
+
+      <div>
+        <label for="phone" class="block text-xs font-semibold text-slate-300 mb-1.5">Registered Mobile Number</label>
+        <div class="flex rounded-xl border border-slate-700 bg-slate-950 overflow-hidden focus-within:border-indigo-500 transition-all">
+          <span class="bg-slate-900 px-3.5 py-2.5 text-xs font-mono font-semibold text-slate-400 border-r border-slate-800 flex items-center">
+            +91
+          </span>
+          <input 
+            id="phone" 
+            type="tel" 
+            inputmode="numeric" 
+            maxlength="10" 
+            placeholder="Enter 10-digit phone number"
+            class="w-full bg-transparent px-3 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none font-mono tracking-wider"
+          />
+        </div>
+      </div>
+
+      <button 
+        id="sendOtpBtn" 
+        disabled 
+        class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold text-xs transition-all shadow-lg shadow-indigo-600/25 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+      >
+        <span>Send Verification OTP</span>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
+      </button>
+
+      <p class="text-[11px] text-slate-500 text-center">
+        A 6-digit OTP will be sent to verify your identity on the Maharashtra Skill Network.
+      </p>
+    </div>
+
+    <!-- Step 2: OTP Verification -->
+    <div id="step-otp" class="hidden space-y-5">
+      <div class="text-center">
+        <h2 class="text-base font-bold text-white">Enter OTP Verification Code</h2>
+        <p id="otpSub" class="text-xs text-slate-400 mt-0.5">OTP sent to +91 Mobile Number</p>
+      </div>
+
+      <!-- Demo OTP Banner -->
+      <div class="bg-emerald-950/40 p-3 rounded-xl border border-emerald-500/30 text-emerald-300 text-xs font-semibold text-center flex items-center justify-center space-x-2">
+        <svg class="w-4 h-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+        </svg>
+        <span>Demo OTP Code: <span class="font-mono text-emerald-200 font-extrabold text-sm ml-1 tracking-widest">1 2 3 4 5 6</span> (or any 6 digits)</span>
+      </div>
+
+      <div id="otpBoxes" class="flex justify-between gap-2">
+        <input maxlength="1" inputmode="numeric" class="otp-box w-12 h-13 text-center text-lg font-bold font-mono text-white bg-slate-950 border border-slate-700 rounded-xl outline-none transition-all">
+        <input maxlength="1" inputmode="numeric" class="otp-box w-12 h-13 text-center text-lg font-bold font-mono text-white bg-slate-950 border border-slate-700 rounded-xl outline-none transition-all">
+        <input maxlength="1" inputmode="numeric" class="otp-box w-12 h-13 text-center text-lg font-bold font-mono text-white bg-slate-950 border border-slate-700 rounded-xl outline-none transition-all">
+        <input maxlength="1" inputmode="numeric" class="otp-box w-12 h-13 text-center text-lg font-bold font-mono text-white bg-slate-950 border border-slate-700 rounded-xl outline-none transition-all">
+        <input maxlength="1" inputmode="numeric" class="otp-box w-12 h-13 text-center text-lg font-bold font-mono text-white bg-slate-950 border border-slate-700 rounded-xl outline-none transition-all">
+        <input maxlength="1" inputmode="numeric" class="otp-box w-12 h-13 text-center text-lg font-bold font-mono text-white bg-slate-950 border border-slate-700 rounded-xl outline-none transition-all">
+      </div>
+
+      <div class="flex items-center justify-between text-xs text-slate-400">
+        <span id="timerText">Resend OTP in 00:30</span>
+        <button id="resendBtn" disabled class="text-indigo-400 hover:underline disabled:opacity-40 disabled:no-underline font-medium">
+          Resend Code
+        </button>
+      </div>
+
+      <button 
+        id="verifyBtn" 
+        disabled 
+        class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-semibold text-xs transition-all shadow-lg shadow-emerald-600/25 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+      >
+        <span>Verify & Enter Dashboard</span>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+      </button>
+
+      <button id="backBtn" class="w-full py-1 text-xs text-slate-400 hover:text-white transition-all text-center">
+        ← Change phone number
+      </button>
+    </div>
+
+    <!-- Step 3: Success & Redirection -->
+    <div id="step-success" class="hidden text-center py-6 space-y-4">
+      <div class="w-16 h-16 bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 rounded-full flex items-center justify-center mx-auto text-2xl animate-bounce">
+        ✓
+      </div>
+      <div>
+        <h2 class="text-lg font-bold text-white">Authentication Verified!</h2>
+        <p class="text-xs text-slate-400 mt-1">Redirecting to KaushalSetu Intelligence Dashboard...</p>
+      </div>
+      <div class="w-full bg-slate-900 h-1.5 rounded-full overflow-hidden">
+        <div class="bg-gradient-to-r from-emerald-400 to-indigo-500 h-full w-full animate-pulse"></div>
+      </div>
+    </div>
+
+    <!-- Footer Info -->
+    <div class="pt-4 border-t border-slate-800 text-center text-[10px] text-slate-500">
+      Department of Skills, Employment, Entrepreneurship & Innovation • Govt of Maharashtra
+    </div>
+
+  </div>
+
+<script>
+  const phoneInput = document.getElementById('phone');
+  const sendOtpBtn = document.getElementById('sendOtpBtn');
+  const stepPhone = document.getElementById('step-phone');
+  const stepOtp = document.getElementById('step-otp');
+  const stepSuccess = document.getElementById('step-success');
+  const otpSub = document.getElementById('otpSub');
+  const otpBoxes = [...document.getElementById('otpBoxes').querySelectorAll('input')];
+  const verifyBtn = document.getElementById('verifyBtn');
+  const backBtn = document.getElementById('backBtn');
+  const resendBtn = document.getElementById('resendBtn');
+  const timerText = document.getElementById('timerText');
+  const roleBtns = document.querySelectorAll('.role-btn');
+
+  let selectedRole = 'trainee';
+  let timerId = null;
+
+  roleBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      roleBtns.forEach(b => {
+        b.classList.remove('border-indigo-500', 'bg-indigo-600/20', 'text-indigo-300');
+        b.classList.add('border-slate-800', 'bg-slate-900', 'text-slate-400');
+      });
+      btn.classList.remove('border-slate-800', 'bg-slate-900', 'text-slate-400');
+      btn.classList.add('border-indigo-500', 'bg-indigo-600/20', 'text-indigo-300');
+      selectedRole = btn.getAttribute('data-role');
+    });
+  });
+
+  phoneInput.addEventListener('input', () => {
+    phoneInput.value = phoneInput.value.replace(/\D/g, '').slice(0, 10);
+    sendOtpBtn.disabled = phoneInput.value.length !== 10;
+  });
+
+  function showStep(step) {
+    [stepPhone, stepOtp, stepSuccess].forEach(s => s.classList.add('hidden'));
+    step.classList.remove('hidden');
+  }
+
+  function startTimer(sec) {
+    clearInterval(timerId);
+    resendBtn.disabled = true;
+    let t = sec;
+    const render = () => {
+      const m = String(Math.floor(t / 60)).padStart(2, '0');
+      const s = String(t % 60).padStart(2, '0');
+      timerText.textContent = `Resend OTP in ${m}:${s}`;
+    };
+    render();
+    timerId = setInterval(() => {
+      t--;
+      if (t <= 0) {
+        clearInterval(timerId);
+        timerText.textContent = "Didn't receive code?";
+        resendBtn.disabled = false;
+      } else {
+        render();
+      }
+    }, 1000);
+  }
+
+  sendOtpBtn.addEventListener('click', () => {
+    const num = phoneInput.value;
+    otpSub.textContent = `OTP code sent to +91 ${num} (${selectedRole.toUpperCase()})`;
+    otpBoxes.forEach(b => b.value = '');
+    otpBoxes[0].focus();
+    checkComplete();
+    showStep(stepOtp);
+    startTimer(30);
+  });
+
+  backBtn.addEventListener('click', () => {
+    clearInterval(timerId);
+    showStep(stepPhone);
+  });
+
+  resendBtn.addEventListener('click', () => {
+    otpBoxes.forEach(b => b.value = '');
+    otpBoxes[0].focus();
+    checkComplete();
+    startTimer(30);
+  });
+
+  otpBoxes.forEach((box, i) => {
+    box.addEventListener('input', () => {
+      box.value = box.value.replace(/\D/g, '').slice(0, 1);
+      if (box.value && i < otpBoxes.length - 1) otpBoxes[i + 1].focus();
+      checkComplete();
+    });
+    box.addEventListener('keydown', (e) => {
+      if (e.key === 'Backspace' && !box.value && i > 0) otpBoxes[i - 1].focus();
+    });
+    box.addEventListener('paste', (e) => {
+      e.preventDefault();
+      const digits = (e.clipboardData.getData('text') || '').replace(/\D/g, '').slice(0, 6).split('');
+      digits.forEach((d, idx) => { if (otpBoxes[idx]) otpBoxes[idx].value = d; });
+      checkComplete();
+    });
+  });
+
+  function checkComplete() {
+    verifyBtn.disabled = !otpBoxes.every(b => b.value.length === 1);
+  }
+
+  verifyBtn.addEventListener('click', () => {
+    clearInterval(timerId);
+    showStep(stepSuccess);
+    setTimeout(() => {
+      window.location.href = '/';
+    }, 1200);
+  });
+</script>
+
+</body>
+</html>
+
